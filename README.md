@@ -3,8 +3,21 @@ A small Javascript library to help with HTML forms
   
 [Example](https://e3ndr.github.io/FormsJS/example.html)  
   
-## How to use  
+## How it works  
+Elements with the `data` class will automatically be parsed.  
+It will use the `name` attribute as a key in the returned JSON object.  
   
+#### For checkboxes:  
+&nbsp;&nbsp;&nbsp;&nbsp;It will return as true or false.  
+    
+#### For radio buttons:  
+&nbsp;&nbsp;&nbsp;&nbsp;It will use the `value` attribute.
+    
+#### For dropdowns:  
+&nbsp;&nbsp;&nbsp;&nbsp;It will `value` of the selected `<option>`, if none is present the text value will be used.  
+  
+  
+## How to use  
 ```html
 <!-- Using Bulma here, they make html look pretty -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.css" />
