@@ -1,6 +1,7 @@
 # FormsJS
 A small Javascript library to help with HTML forms  
   
+[Example](https://e3ndr.github.io/FormsJS/example.html)  
   
 ## How to use  
   
