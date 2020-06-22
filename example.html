@@ -11,9 +11,10 @@
             <div class="columns">
                 <div class="column">
                     <div id="form">
+                        <h1 class="title">Form</h1>
                         <label class="label">
                             Username
-                            <input class="input data" name="username" type="text" />
+                            <input class="input data" name="username" type="text" value="formsjs_" />
                         </label>
                         <label class="label">
                             Send me promotional emails
@@ -24,14 +25,27 @@
                         <label class="label">
                             Gender
                             <br />
-                            <select class="select data" name="gender">
-                                <option value="other">Other</option>
-                                <option value="female">Female</option>
-                                <option value="male">Male</option>
-                            </select>
+                            <div class="select control">
+                                <select class="data" name="gender">
+                                    <option selected value="unknown">Prefer not to say</option>
+                                    <option value="other">Other</option>
+                                    <option value="female">Female</option>
+                                    <option value="male">Male</option>
+                                </select>
+                            </div>
+                        </label>
+                        <label class="label">
+                            Where do you live?
+                            <br />
+                            <div class="select control">
+                                <select class="data" name="zipcode">
+                                    <option value="">Elsewhere</option>
+                                    <option value="94016">San Francisco</option>
+                                    <option value="94088">San Jose</option>
+                                </select>
+                            </div>
                         </label>
                         <div class="control">
-
                             <label class="label">
                                 Account Type
                             </label>
@@ -44,14 +58,28 @@
                                 Premium Account
                             </label>
                         </div>
-                        <br />
-                        <button class="button" id="submit">Submit</button>
                     </div>
                 </div>
                 <div class="column">
+                    <h1 class="title">Result</h1>
+                    <textarea class="textarea" rows="12" id="result" readonly></textarea>
+                </div>
+                <div class="column" id="options">
+                    <h1 class="title">FormsJS options</h1>
                     <label class="label">
-                        Json Result
-                        <textarea class="textarea" rows="10" id="result" placeholder="Hit submit" readonly></textarea>
+                        Blank is null
+                        <br />
+                        <input class="checkbox data" name="blank_is_null" type="checkbox" checked />
+                    </label>
+                    <label class="label">
+                        Parse numbers
+                        <br />
+                        <input class="checkbox data" name="parse_numbers" type="checkbox" checked />
+                    </label>
+                    <label class="label">
+                        Allow false
+                        <br />
+                        <input class="checkbox data" name="allow_false" type="checkbox" checked />
                     </label>
                 </div>
             </div>
@@ -59,15 +87,47 @@
     </main>
 </body>
 <footer>
+    <script src="forms.js"></script>
     <script>
-        document.querySelector("#submit").addEventListener("click", () => {
+        Array.from(document.querySelector("#form").getElementsByClassName("data")).forEach((element) => {
+            element.addEventListener("change", submit);
+        });
+
+        Array.from(document.querySelector("#options").getElementsByClassName("data")).forEach((element) => {
+            element.addEventListener("change", updateOptions);
+        });
+
+        function updateOptions() {
+            let result = FORMSJS.readForm("#options");
+
+            console.log(result);
+
+            FORMSJS.BLANK_IS_NULL = result.blank_is_null;
+            FORMSJS.PARSE_NUMBERS = result.parse_numbers;
+            FORMSJS.ALLOW_FALSE = result.allow_false;
+
+            submit(); // Update the result box to represent the new options.
+        }
+
+        function submit() {
+            let username = document.querySelector("[name=username]");
             let result = FORMSJS.readForm("#form");
+
+            // Make the username box turn red if its length is less than 8
+            if (username.value.length < 8) {
+                username.classList.remove("is-success");
+                username.classList.add("is-danger");
+            } else {
+                username.classList.remove("is-danger");
+                username.classList.add("is-success");
+            }
 
             console.log(result);
             document.querySelector("#result").value = JSON.stringify(result, null, 2);
-        });
+        }
+
+        updateOptions(); // It'll auto fill the result box.
     </script>
-    <script src="https://e3ndr.github.io/FormsJS/forms.js"></script>
 </footer>
 
 </html>
